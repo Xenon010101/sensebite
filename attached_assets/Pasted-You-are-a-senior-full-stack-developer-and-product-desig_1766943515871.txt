@@ -1,0 +1,90 @@
+You are a senior full-stack developer and product designer.
+
+Task:
+BUILD A COMPLETE, WORKING WEBSITE from scratch for an AI-powered consumer product called “SenseBite”.
+
+This is NOT a redesign.
+This is NOT UI-only.
+This is a FULL WEBSITE BUILD.
+
+Start from an empty project.
+
+--------------------------------
+PRODUCT OVERVIEW
+--------------------------------
+SenseBite helps users understand food ingredients using AI explanations.
+The product should feel like a real startup website, not a demo.
+
+--------------------------------
+TECH STACK (MANDATORY)
+--------------------------------
+- React or Next.js
+- Tailwind CSS (or clean modern CSS)
+- Backend API route for AI calls
+- OpenAI API integration
+- No database
+- No authentication
+
+--------------------------------
+WEBSITE PAGES (ALL REQUIRED)
+--------------------------------
+1. Home / Experience Page
+   - Visually impressive hero section
+   - Ingredient text input
+   - Image upload for label photos
+   - Primary CTA button
+   - AI response section in styled cards
+   - Smooth animations and transitions
+
+2. About Page
+   - Short explanation of philosophy
+   - Clean, readable layout
+
+3. Ethics / Disclaimer Page
+   - Simple, honest disclaimer text
+   - Friendly tone (not legal)
+
+--------------------------------
+FUNCTIONALITY (MANDATORY)
+--------------------------------
+- User can paste ingredients OR upload an image
+- Image upload performs OCR
+- Extracted text is sent to OpenAI
+- AI returns a structured explanation
+- Display the AI response clearly
+- Follow-up questions allowed
+- Everything works without login
+
+--------------------------------
+DESIGN REQUIREMENTS
+--------------------------------
+- Modern startup-level UI
+- NOT minimal
+- NOT plain
+- Use gradients, cards, shadows, icons
+- Strong typography hierarchy
+- Visually appealing color palette
+- Looks good in screenshots
+- Mobile responsive
+
+--------------------------------
+AI BEHAVIOR
+--------------------------------
+- AI should explain ingredients in simple language
+- Highlight only 2–3 key ingredients
+- Explain trade-offs and uncertainty
+- Calm, human tone
+- No medical advice
+
+--------------------------------
+OUTPUT REQUIREMENTS
+--------------------------------
+- Generate ALL necessary files
+- Include folder structure
+- Include frontend + backend code
+- Ready-to-run project
+- No placeholders
+- No explanations
+- No commentary
+
+Just output the complete working code.
