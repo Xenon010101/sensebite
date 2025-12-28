@@ -75,22 +75,22 @@ export default function Home() {
             <Card className="border-0 shadow-2xl shadow-primary/5 bg-white/80 backdrop-blur-xl overflow-hidden rounded-3xl ring-1 ring-black/5">
               <CardContent className="p-0">
                 <Tabs defaultValue="text" value={activeTab} onValueChange={setActiveTab} className="w-full">
-                  <div className="flex border-b border-border/50 bg-secondary/30">
+                  <TabsList className="w-full h-auto p-0 flex border-b border-border/50 bg-secondary/30 rounded-none">
                     <TabsTrigger 
                       value="text" 
-                      className="flex-1 py-4 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-none border-b-2 border-transparent data-[state=active]:border-primary transition-all font-medium"
+                      className="flex-1 py-4 h-auto rounded-none border-b-2 border-transparent data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-primary transition-all font-medium"
                     >
                       <Type className="w-4 h-4 mr-2" />
                       Paste Ingredients
                     </TabsTrigger>
                     <TabsTrigger 
                       value="image" 
-                      className="flex-1 py-4 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-none border-b-2 border-transparent data-[state=active]:border-primary transition-all font-medium"
+                      className="flex-1 py-4 h-auto rounded-none border-b-2 border-transparent data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-primary transition-all font-medium"
                     >
                       <Upload className="w-4 h-4 mr-2" />
                       Upload Label
                     </TabsTrigger>
-                  </div>
+                  </TabsList>
 
                   <div className="p-6 md:p-8 min-h-[300px] flex flex-col">
                     <TabsContent value="text" className="mt-0 flex-1 flex flex-col">
