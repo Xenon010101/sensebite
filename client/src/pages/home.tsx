@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import heroBg from "@assets/generated_images/abstract_soft_3d_wave_background,_light_mint_green.png";
+import heroBg from "@assets/generated_images/warm_sunset_orange_abstract_background.png";
 
 type AnalysisState = "idle" | "analyzing" | "complete";
 
