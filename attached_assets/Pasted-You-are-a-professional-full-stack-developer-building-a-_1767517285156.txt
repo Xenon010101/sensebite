@@ -1,0 +1,148 @@
+You are a professional full-stack developer building a working AI-native web application, not a static or text-only demo.
+
+App Name
+SenseBite
+Tagline: Making sense of every bite
+
+Core Objective
+Build a functional web app that demonstrates an AI-native consumer health experience where AI is the primary interface, not an add-on.
+
+The app helps users understand food ingredients at the moment of decision by reasoning and explanation, not by listing data.
+
+This is not a database browser, nutrition tracker, or ingredient lookup tool.
+
+Key Experience Rules (Must Follow)
+AI must infer what matters without asking setup questions
+
+No filters, profiles, checkboxes, or configuration screens
+
+No ingredient scores, red/green flags, or health ratings
+
+No dashboards or feature menus
+
+Avoid treating AI like a chatbot pasted into a page
+
+AI must do cognitive work on behalf of the user
+
+User Flow (Required)
+Entry
+User can:
+
+Paste an ingredient list as text
+
+OR upload an image of a food label (OCR can be mocked or basic)
+
+No onboarding, login, or setup screens.
+
+AI Behavior (Most Important)
+Once ingredients are provided, the AI must:
+
+Respond immediately without asking questions
+
+Identify only 2–3 ingredients that matter most
+
+Explain each in simple human language:
+
+Why it’s used
+
+What trade-off exists
+
+Where uncertainty remains
+
+Avoid medical or definitive claims
+
+Use a calm, non-judgmental tone
+
+The AI should not list all ingredients.
+
+Follow-Up Interaction
+Allow users to ask natural follow-up questions such as:
+
+“Why is this ingredient used?”
+
+“Is this okay if I eat it often?”
+
+“Are there simpler alternatives?”
+
+The AI should adapt its explanation based on user follow-ups without restarting the flow.
+
+Reasoning & Explainability Requirement
+Include an explanation layer where the AI briefly clarifies:
+
+Why it focused on certain ingredients
+
+What assumptions it made
+
+Where scientific certainty is limited
+
+This must be written in plain language.
+
+Uncertainty & Safety
+The AI must:
+
+Explicitly communicate uncertainty when appropriate
+
+Avoid absolute statements
+
+Include a small disclaimer:
+“SenseBite provides clarity, not medical advice.”
+
+Technical Expectations
+Use a modern web stack (React / Next.js or equivalent)
+
+Backend API for AI reasoning
+
+LLM-based responses (no fine-tuning required)
+
+Ingredient data can be simulated or partial
+
+OCR accuracy is not important
+
+Focus on experience quality over data completeness
+
+Required Pages / Sections
+Main Experience Page
+
+Ingredient input
+
+AI reasoning output
+
+Follow-up interaction
+
+Short “About” section
+
+Explains philosophy in 2–3 sentences
+
+Small disclaimer section
+
+No user accounts.
+No saved history.
+
+Anti-Goals (Explicitly Do NOT Build)
+Ingredient databases
+
+Nutrition charts or tables
+
+Health scoring systems
+
+Research paper dumps
+
+Filter-heavy interfaces
+
+AI chat that feels generic or robotic
+
+Success Criteria
+The app should clearly show:
+
+AI reasoning instead of data display
+
+Reduced user confusion at decision time
+
+A new interaction paradigm that could not exist without AI
+
+If a judge sees the app without explanation, it should be obvious that:
+
+“This experience is AI-native, not AI-added.”
+
+Final Instruction
+Build a working, interactive prototype that prioritizes reasoning clarity, user understanding, and intelligent behavior over visual complexity or dataset scale.
