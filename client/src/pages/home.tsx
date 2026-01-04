@@ -120,7 +120,10 @@ export default function Home() {
                           </TabsContent>
 
                           <TabsContent value="image" className="mt-0 flex-1 flex flex-col justify-center">
-                            <div className="border-2 border-dashed border-border hover:border-primary/50 transition-colors rounded-xl p-10 flex flex-col items-center justify-center text-center cursor-pointer bg-secondary/10 hover:bg-secondary/20 h-full min-h-[180px]">
+                            <div 
+                              onClick={handleAnalyze}
+                              className="border-2 border-dashed border-border hover:border-primary/50 transition-colors rounded-xl p-10 flex flex-col items-center justify-center text-center cursor-pointer bg-secondary/10 hover:bg-secondary/20 h-full min-h-[180px]"
+                            >
                               <Upload className="w-8 h-8 text-primary mb-4" />
                               <p className="font-medium">Click to upload food label</p>
                             </div>
