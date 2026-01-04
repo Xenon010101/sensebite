@@ -167,7 +167,7 @@ export default function Home() {
                       </div>
 
                       <div className="prose prose-stone max-w-none">
-                        <p className="text-lg text-foreground leading-relaxed mb-6">
+                        <p className="text-xl md:text-2xl font-serif italic text-foreground leading-relaxed mb-6">
                           {result.explanation}
                         </p>
                       </div>
