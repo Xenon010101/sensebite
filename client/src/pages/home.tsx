@@ -25,7 +25,7 @@ export default function Home() {
     setChat([]);
     setTimeout(() => {
       setResult({
-        explanation: "This list is mostly built around hearty oats, which give it a grounded, substantial texture. To keep it sweet and shelf-stable, it uses a concentrated syrup, which is a common trade-off for convenience and consistent flavor. You'll also notice a synthetic dye added mainly to make it look more vibrant and inviting. While these ingredients are typical for this kind of snack, there's always a little uncertainty in how everyone feels after eating them. Overall, it's a straightforward blend of simple grains and more processed touches that most people would find familiar.",
+        explanation: "This list is mostly hearty oats with a sweet syrup for flavor and shelf-life. There's also a synthetic dye used mainly to make it look more inviting. It's a simple blend of grounded grains and typical processed touches that most people find familiar.",
       });
       setStatus("complete");
     }, 2000);
@@ -41,9 +41,9 @@ export default function Home() {
     setIsAsking(true);
 
     setTimeout(() => {
-      let response = "When you eat this regularly, the main thing to consider is how the sweetness of the syrup balances with the grains. Most people find it's just about how it fits into their usual routine.";
+      let response = "Regularly, it's just about how the sweetness balances with the hearty oats in your routine. Most people find it fits in easily with their usual day-to-day choices.";
       if (userMsg.toLowerCase().includes("alternative")) {
-        response = "If you're looking for something a bit closer to home, you could try plain oats with a touch of honey or fresh fruit. It gives you a similar hearty feel but keeps things even simpler.";
+        response = "A simpler approach is using plain oats with a touch of honey or fresh fruit. It gives you that same hearty feel while keeping the ingredients even more straightforward.";
       }
       setChat(prev => [...prev, { role: 'ai', content: response }]);
       setIsAsking(false);
