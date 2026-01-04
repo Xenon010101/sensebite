@@ -59,11 +59,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="relative overflow-hidden min-h-[calc(100vh-4rem)]">
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-multiply">
-             <img src={heroBg} className="w-full h-full object-cover" alt="Background Texture" />
-        </div>
-        
+      <div className="relative overflow-hidden min-h-[calc(100vh-4rem)] mesh-gradient">
         <div className="container mx-auto px-4 py-12 md:py-24 relative z-10 flex flex-col items-center">
           
           <AnimatePresence mode="wait">
