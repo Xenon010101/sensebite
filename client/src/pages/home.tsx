@@ -25,14 +25,7 @@ export default function Home() {
     setChat([]);
     setTimeout(() => {
       setResult({
-        summary: "This product is mainly made for a long shelf-life and a sweet taste.",
-        reasoning: "I focused on these ingredients because they shape most of how this product tastes and behaves. This explanation assumes typical, everyday consumption.",
-        ingredients: [
-          { name: "High Fructose Corn Syrup", status: "warning", desc: "Used to give a consistent, sweet flavor at a low cost. The trade-off is how quickly it adds a lot of sweetness compared to how most people typically use sugar." },
-          { name: "Red 40", status: "caution", desc: "Added mainly for visual appeal to make the product look more inviting. There is some uncertainty as to how different people might react to it." },
-          { name: "Whole Grain Oats", status: "good", desc: "This is the main ingredient that gives the product its texture and substance. It provides a grounded balance to the more processed parts of the list." },
-        ],
-        verdict: "A simple blend of hearty oats and more processed sweeteners.",
+        explanation: "This list is mostly built around hearty oats, which give it a grounded, substantial texture. To keep it sweet and shelf-stable, it uses a concentrated syrup, which is a common trade-off for convenience and consistent flavor. You'll also notice a synthetic dye added mainly to make it look more vibrant and inviting. While these ingredients are typical for this kind of snack, there's always a little uncertainty in how everyone feels after eating them. Overall, it's a straightforward blend of simple grains and more processed touches that most people would find familiar.",
       });
       setStatus("complete");
     }, 2000);
@@ -48,9 +41,9 @@ export default function Home() {
     setIsAsking(true);
 
     setTimeout(() => {
-      let response = "When thinking about eating this often, it's worth noting how the sweetness is balanced by the oats. For most people, it's about how this fits into a typical day.";
+      let response = "When you eat this regularly, the main thing to consider is how the sweetness of the syrup balances with the grains. Most people find it's just about how it fits into their usual routine.";
       if (userMsg.toLowerCase().includes("alternative")) {
-        response = "A simpler approach might be using plain oats and adding your own fruit or honey. This gives you more control over the ingredients and avoids the added colors.";
+        response = "If you're looking for something a bit closer to home, you could try plain oats with a touch of honey or fresh fruit. It gives you a similar hearty feel but keeps things even simpler.";
       }
       setChat(prev => [...prev, { role: 'ai', content: response }]);
       setIsAsking(false);
@@ -159,13 +152,13 @@ export default function Home() {
                   className="space-y-6"
                 >
                   <div className="bg-white rounded-3xl shadow-2xl border border-border/60 overflow-hidden">
-                    <div className="p-6 md:p-8">
-                      <div className="flex justify-between items-center mb-6">
+                    <div className="p-8 md:p-10">
+                      <div className="flex justify-between items-center mb-8">
                         <div className="flex items-center gap-3">
-                          <div className="bg-emerald-100 p-2 rounded-xl">
-                            <Sparkles className="w-5 h-5 text-emerald-600" />
+                          <div className="bg-amber-100 p-2 rounded-xl">
+                            <Sparkles className="w-5 h-5 text-amber-600" />
                           </div>
-                          <h3 className="text-xl font-display font-bold">AI Insight</h3>
+                          <h3 className="text-xl font-display font-bold">Insight</h3>
                         </div>
                         <Button variant="ghost" size="sm" onClick={() => setStatus("idle")} className="text-muted-foreground">
                           <RefreshCcw className="w-4 h-4 mr-2" />
@@ -173,27 +166,14 @@ export default function Home() {
                         </Button>
                       </div>
 
-                      <div className="bg-secondary/20 p-4 rounded-2xl mb-6 border border-secondary/50">
-                        <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-1">Reasoning Layer</p>
-                        <p className="text-sm text-muted-foreground leading-relaxed">{result.reasoning}</p>
-                      </div>
-
-                      <div className="space-y-4 mb-8">
-                        {result.ingredients.map((ing: any, i: number) => (
-                          <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-white border border-border shadow-sm">
-                            {ing.status === 'warning' && <AlertTriangle className="w-5 h-5 text-orange-500 shrink-0 mt-1" />}
-                            {ing.status === 'caution' && <Info className="w-5 h-5 text-yellow-500 shrink-0 mt-1" />}
-                            {ing.status === 'good' && <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-1" />}
-                            <div>
-                              <p className="font-bold text-foreground leading-tight">{ing.name}</p>
-                              <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{ing.desc}</p>
-                            </div>
-                          </div>
-                        ))}
+                      <div className="prose prose-stone max-w-none">
+                        <p className="text-lg text-foreground leading-relaxed mb-6">
+                          {result.explanation}
+                        </p>
                       </div>
 
                       {/* Chat History */}
-                      <div className="space-y-4 mb-6">
+                      <div className="space-y-4 mb-6 mt-8 border-t border-border/50 pt-8">
                         {chat.map((msg, i) => (
                           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                             <div className={`max-w-[85%] p-4 rounded-2xl text-sm ${
@@ -219,7 +199,7 @@ export default function Home() {
                         <Input 
                           value={followUp}
                           onChange={(e) => setFollowUp(e.target.value)}
-                          placeholder="Ask a follow-up question..."
+                          placeholder="Ask anything else..."
                           className="h-14 pr-14 rounded-2xl bg-secondary/20 border-border/60 focus:ring-primary/20"
                         />
                         <Button 
@@ -232,7 +212,7 @@ export default function Home() {
                         </Button>
                       </form>
                       
-                      <p className="text-[10px] text-center text-muted-foreground mt-6 uppercase tracking-widest font-medium">
+                      <p className="text-[10px] text-center text-muted-foreground mt-8 uppercase tracking-widest font-medium opacity-50">
                         SenseBite provides clarity, not medical advice.
                       </p>
                     </div>
