@@ -1,0 +1,106 @@
+You are improving an existing working AI-native web app called SenseBite.
+
+Do not change the UI layout, component structure, or visual design.
+Only update the content generation logic and wording of AI responses.
+
+Core Correction Goal
+The current AI output feels overly technical and model-like.
+Revise the AI’s language so it sounds like a thoughtful human product explanation, not an AI system report.
+
+Mandatory Tone & Language Rules
+Use simple, conversational, human language
+
+Avoid academic, clinical, or system-style phrasing
+
+Avoid percentages, metrics, or internal model explanations
+
+Avoid phrases like:
+
+“represents X%”
+
+“additive profile”
+
+“standard consumption patterns”
+
+“metabolic load”
+
+Do not sound authoritative or medical
+
+Do not over-explain
+
+The AI should sound calm, grounded, and helpful — like a knowledgeable guide.
+
+Reasoning Layer Correction
+Keep the Reasoning Layer section, but rewrite its content to:
+
+Explain why these ingredients were chosen in plain language
+
+Avoid numeric or analytical justification
+
+Use everyday assumptions (e.g. “typical use”, “most people”)
+
+Example Style (do not copy verbatim):
+“I focused on these ingredients because they shape most of how this product tastes and behaves. This explanation assumes typical, everyday consumption.”
+
+Ingredient Card Corrections
+For each highlighted ingredient:
+
+Structure to Keep
+Ingredient name
+
+Short explanation
+
+Trade-off OR uncertainty (one only, not both)
+
+Language Rules
+Explain why it exists in the product
+
+Describe trade-offs in human terms
+
+Communicate uncertainty gently
+
+No scientific claims or health advice
+
+No labeling as “good” or “bad”
+
+Example Style (do not copy verbatim):
+“Used mainly to improve taste…”
+
+“Added for visual appeal…”
+
+“Helps balance texture and digestion…”
+
+Overall Response Guidance
+Highlight only 2–3 ingredients
+
+Add one soft, summarizing sentence at the end that helps the user decide
+
+Do not instruct or judge the user
+
+Do not recommend avoidance or consumption
+
+What Must NOT Change
+UI layout
+
+Card structure
+
+Section titles
+
+Flow of interaction
+
+Number of ingredients shown
+
+Only adjust how the AI speaks, not what the app shows.
+
+Final Instruction
+Rewrite the AI response logic so the output feels:
+
+Human-written
+
+Calm and reflective
+
+Honest about uncertainty
+
+Supportive, not instructional
+
+The result should feel like a carefully designed product explanation, not an AI output.

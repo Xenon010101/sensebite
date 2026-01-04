@@ -25,14 +25,14 @@ export default function Home() {
     setChat([]);
     setTimeout(() => {
       setResult({
-        summary: "This product is a processed snack focused on shelf-life and sweetness.",
-        reasoning: "I focused on these ingredients because they represent over 80% of the additive profile. My analysis assumes standard consumption patterns.",
+        summary: "This product is mainly made for a long shelf-life and a sweet taste.",
+        reasoning: "I focused on these ingredients because they shape most of how this product tastes and behaves. This explanation assumes typical, everyday consumption.",
         ingredients: [
-          { name: "High Fructose Corn Syrup", status: "warning", desc: "A concentrated sweetener used for low-cost intensity. Trade-off: High palatability vs metabolic load." },
-          { name: "Red 40", status: "caution", desc: "Synthetic dye for visual appeal. Uncertainty: Effects vary significantly by individual sensitivity." },
-          { name: "Whole Grain Oats", status: "good", desc: "Primary structural ingredient. Provides fiber that slows the absorption of the added sugars." },
+          { name: "High Fructose Corn Syrup", status: "warning", desc: "Used to give a consistent, sweet flavor at a low cost. The trade-off is how quickly it adds a lot of sweetness compared to how most people typically use sugar." },
+          { name: "Red 40", status: "caution", desc: "Added mainly for visual appeal to make the product look more inviting. There is some uncertainty as to how different people might react to it." },
+          { name: "Whole Grain Oats", status: "good", desc: "This is the main ingredient that gives the product its texture and substance. It provides a grounded balance to the more processed parts of the list." },
         ],
-        verdict: "A mix of high-energy oats and rapid-absorption sugars.",
+        verdict: "A simple blend of hearty oats and more processed sweeteners.",
       });
       setStatus("complete");
     }, 2000);
@@ -48,9 +48,9 @@ export default function Home() {
     setIsAsking(true);
 
     setTimeout(() => {
-      let response = "Based on the ingredient profile, this would be a high-sugar choice for daily consumption. The trade-off is convenience versus long-term metabolic stability.";
+      let response = "When thinking about eating this often, it's worth noting how the sweetness is balanced by the oats. For most people, it's about how this fits into a typical day.";
       if (userMsg.toLowerCase().includes("alternative")) {
-        response = "A simpler alternative would be raw rolled oats with fresh fruit, which removes the synthetic dyes and concentrated syrups entirely.";
+        response = "A simpler approach might be using plain oats and adding your own fruit or honey. This gives you more control over the ingredients and avoids the added colors.";
       }
       setChat(prev => [...prev, { role: 'ai', content: response }]);
       setIsAsking(false);
