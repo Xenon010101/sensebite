@@ -25,7 +25,7 @@ export default function Home() {
     setChat([]);
     setTimeout(() => {
       setResult({
-        explanation: "This looks like a straightforward oat product that’s been dressed up to taste sweeter and look more appealing. The extra touches are common in packaged foods and move it away from a simple, whole-food feel, but they don't necessarily stand out as extreme. It’s the sort of thing many people enjoy now and then without thinking too much about it.",
+        explanation: "This product is mostly hearty oats with a sweet syrup added for flavor. While the oats provide a good source of fiber which helps with energy balance, the added syrup moves it away from being a whole food. The synthetic dyes are mainly for appearance and don't add nutritional value. It's a fine choice for an occasional snack, but for an everyday health boost, you might prefer something with fewer processed touches.",
       });
       setStatus("complete");
     }, 2000);
@@ -41,9 +41,9 @@ export default function Home() {
     setIsAsking(true);
 
     setTimeout(() => {
-      let response = "When you're eating it fairly often, it's just helpful to notice how those sweet and colorful touches fit into your day. It’s really about whether you’re looking for something simple or something a bit more dressed up.";
+      let response = "From a health perspective, the oats are great for steady energy, but the syrup can cause quicker sugar spikes. It's best enjoyed as a treat rather than a primary health food.";
       if (userMsg.toLowerCase().includes("alternative")) {
-        response = "A simpler approach might be starting with plain oats and adding your own honey or fruit. It keeps that same hearty feel while being a bit more grounded than the packaged version.";
+        response = "For a healthier alternative, plain oats with fresh berries and a drizzle of honey give you more vitamins and antioxidants without the artificial additives.";
       }
       setChat(prev => [...prev, { role: 'ai', content: response }]);
       setIsAsking(false);
