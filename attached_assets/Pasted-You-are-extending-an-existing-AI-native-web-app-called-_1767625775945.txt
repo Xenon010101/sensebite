@@ -1,0 +1,115 @@
+You are extending an existing AI-native web app called SenseBite.
+
+Your task is to add clickable product categories that allow users to explore common food products by clicking on an image, without typing or searching.
+
+Do not turn this into a browsing app, catalog, or database.
+
+Purpose of Categories
+Categories are entry shortcuts, not features.
+
+They exist only to:
+
+Reduce friction
+
+Let users start the AI experience instantly
+
+Demonstrate SenseBite’s reasoning on familiar products
+
+Category UI Behavior
+Display categories as image-based cards
+
+Each card should show:
+
+A product image
+
+A short category label
+
+No brand names
+
+No ingredient lists visible to the user
+
+No filters, dropdowns, or search inside categories
+
+Place categories near the main input with a soft label like:
+
+“Or explore common products”
+
+Required Categories (Use These)
+Add 6–8 common categories such as:
+
+Breakfast cereals
+
+Packaged snacks
+
+Soft drinks
+
+Instant foods (noodles, soups)
+
+Chocolates & sweets
+
+Dairy products
+
+Energy or sports drinks
+
+Packaged bread & bakery
+
+Images can be generic stock-style visuals.
+
+Click Behavior (Very Important)
+When a user clicks a category:
+
+Load a predefined sample ingredient list (mock data is fine)
+
+Automatically trigger the existing AI explanation flow
+
+Do not show the ingredients directly
+
+Do not explain where the data came from
+
+The experience should feel like:
+
+“I clicked → SenseBite immediately explains”
+
+AI Response Rules (Must Stay Consistent)
+Use the existing human, Version-C response style
+
+No structured ingredient breakdowns
+
+No boxes, lists, or sections
+
+No reasoning layer mentions
+
+Calm, natural, human explanation
+
+Mention only what matters, naturally
+
+Acknowledge processing without alarm
+
+End with a soft sense of perspective (e.g. occasional vs everyday)
+
+Data Rules
+Ingredient data can be mocked or simulated
+
+Accuracy and completeness are not important
+
+Do not surface raw data or nutrition tables
+
+Categories must not feel like a database
+
+What NOT to Add
+No product comparison
+
+No “popular items”
+
+No scrolling product lists
+
+No scores, labels, or ratings
+
+No search inside categories
+
+Final Instruction
+Categories should feel like friendly shortcuts into understanding, not a browsing feature.
+
+The moment a category is clicked, the AI should take over and do the cognitive work for the user.
+
+If someone removes the categories, the core app should still make sense.

@@ -10,6 +10,26 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import heroBg from "@assets/generated_images/warm_sunset_orange_abstract_background.png";
 
+import cerealImg from "@assets/stock_images/bowl_of_cereal_milk_65339b07.jpg";
+import snacksImg from "@assets/stock_images/bag_of_potato_chips__ca20f7d6.jpg";
+import drinksImg from "@assets/stock_images/cola_glass_with_ice_92b64f12.jpg";
+import instantImg from "@assets/stock_images/instant_noodles_in_b_ea9da7f2.jpg";
+import chocolateImg from "@assets/stock_images/dark_chocolate_bar_p_66ed506d.jpg";
+import dairyImg from "@assets/stock_images/glass_of_fresh_milk__ce935e44.jpg";
+import energyImg from "@assets/stock_images/energy_drink_can_blu_90687bff.jpg";
+import breadImg from "@assets/stock_images/loaf_of_sliced_white_9b230237.jpg";
+
+const CATEGORIES = [
+  { id: "cereal", label: "Breakfast Cereals", image: cerealImg, data: "Whole grain oats, sugar, oat bran, corn starch, honey, brown sugar syrup, salt, tripotassium phosphate, rice bran oil, natural almond flavor." },
+  { id: "snacks", label: "Packaged Snacks", image: snacksImg, data: "Potatoes, vegetable oil (sunflower, corn, and/or canola oil), salt, maltodextrin, sugar, dextrose, yeast extract, onion powder, natural flavors." },
+  { id: "drinks", label: "Soft Drinks", image: drinksImg, data: "Carbonated water, high fructose corn syrup, caramel color, phosphoric acid, natural flavors, caffeine." },
+  { id: "instant", label: "Instant Foods", image: instantImg, data: "Enriched wheat flour, vegetable oil, salt, dehydrated vegetables, monosodium glutamate, soy sauce powder, spices, artificial flavors." },
+  { id: "chocolates", label: "Chocolates & Sweets", image: chocolateImg, data: "Milk chocolate (sugar, cocoa butter, chocolate, skim milk, lactose, milkfat, soy lecithin), peanuts, corn syrup, sugar, palm oil, skim milk." },
+  { id: "dairy", label: "Dairy Products", image: dairyImg, data: "Grade A pasteurized milk, Vitamin D3." },
+  { id: "energy", label: "Energy Drinks", image: energyImg, data: "Carbonated water, sucrose, glucose, citric acid, taurine, sodium citrate, magnesium carbonate, caffeine, niacinamide, calcium pantothenate." },
+  { id: "bakery", label: "Packaged Bread", image: breadImg, data: "Unbleached enriched wheat flour, water, yeast, sugar, soybean oil, salt, wheat gluten, calcium propionate, datem, monoglycerides." },
+];
+
 type AnalysisState = "idle" | "analyzing" | "complete";
 
 export default function Home() {
@@ -20,13 +40,21 @@ export default function Home() {
   const [chat, setChat] = useState<{ role: 'user' | 'ai', content: string }[]>([]);
   const [isAsking, setIsAsking] = useState(false);
 
-  const handleAnalyze = () => {
+  const handleAnalyze = (predefinedData?: string) => {
     setStatus("analyzing");
     setChat([]);
+    
+    // Simulate varied responses based on category or general input
     setTimeout(() => {
-      setResult({
-        explanation: "This product is mostly hearty oats with a sweet syrup added for flavor. While the oats provide a good source of fiber which helps with energy balance, the added syrup moves it away from being a whole food. The synthetic dyes are mainly for appearance and don't add nutritional value. It's a fine choice for an occasional snack, but for an everyday health boost, you might prefer something with fewer processed touches.",
-      });
+      let explanation = "This product is mostly hearty oats with a sweet syrup added for flavor. While the oats provide a good source of fiber which helps with energy balance, the added syrup moves it away from being a whole food. The synthetic dyes are mainly for appearance and don't add nutritional value. It's a fine choice for an occasional snack, but for an everyday health boost, you might prefer something with fewer processed touches.";
+      
+      if (predefinedData?.includes("Phosphoric acid")) {
+        explanation = "This drink is essentially a blend of carbonated water and concentrated sweeteners. The phosphoric acid gives it that characteristic bite, but it's something to be mindful of for long-term dental and bone health. The caramel coloring is purely for aesthetics. It's best enjoyed as an occasional treat rather than a primary source of hydration.";
+      } else if (predefinedData?.includes("Monosodium glutamate")) {
+        explanation = "These noodles are a quick source of energy from processed wheat, but they rely heavily on sodium and flavor enhancers like MSG for their savory profile. While satisfying in the moment, they lack the fiber and fresh nutrients found in whole meals. They're a convenient pantry staple, but adding some fresh greens or an egg can help balance out the nutritional profile.";
+      }
+      
+      setResult({ explanation });
       setStatus("complete");
     }, 2000);
   };
@@ -141,7 +169,7 @@ export default function Home() {
 
                           <div className="mt-6">
                             <Button 
-                              onClick={handleAnalyze} 
+                              onClick={() => handleAnalyze()} 
                               disabled={status === "analyzing"}
                               className="w-full h-12 text-lg font-semibold rounded-xl shadow-lg shadow-primary/25"
                             >
@@ -156,7 +184,38 @@ export default function Home() {
                       </Tabs>
                     </CardContent>
                   </Card>
+
+                  {/* Categories Section */}
+                  <div className="mt-12 w-full">
+                    <p className="text-sm font-medium text-muted-foreground mb-6 text-center opacity-70">
+                      Or explore common products
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {CATEGORIES.map((cat) => (
+                        <motion.button
+                          key={cat.id}
+                          whileHover={{ y: -4 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => handleAnalyze(cat.data)}
+                          className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-secondary/10 border border-border/50 transition-all hover:shadow-xl hover:shadow-primary/5"
+                        >
+                          <img 
+                            src={cat.image} 
+                            alt={cat.label}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                          <div className="absolute bottom-0 left-0 right-0 p-4">
+                            <span className="text-xs font-bold text-white/90 uppercase tracking-wider">
+                              {cat.label}
+                            </span>
+                          </div>
+                        </motion.button>
+                      ))}
+                    </div>
+                  </div>
                 </motion.div>
+
               ) : (
                 <motion.div
                   key="results-card"
