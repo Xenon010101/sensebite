@@ -44,14 +44,24 @@ export default function Home() {
     setStatus("analyzing");
     setChat([]);
     
-    // Simulate varied responses based on category or general input
+    // Varied responses based on product type
     setTimeout(() => {
-      let explanation = "This product is mostly hearty oats with a sweet syrup added for flavor. While the oats provide a good source of fiber which helps with energy balance, the added syrup moves it away from being a whole food. The synthetic dyes are mainly for appearance and don't add nutritional value. It's a fine choice for an occasional snack, but for an everyday health boost, you might prefer something with fewer processed touches.";
+      let explanation = "This product is mostly hearty oats with a sweet syrup added for flavor. While the oats provide a good source of fiber which helps with energy balance, the added syrup moves it away from being a whole food. It's a fine choice for an occasional snack, but for an everyday health boost, you might prefer something with fewer processed touches.";
       
       if (predefinedData?.includes("Phosphoric acid")) {
         explanation = "This drink is essentially a blend of carbonated water and concentrated sweeteners. The phosphoric acid gives it that characteristic bite, but it's something to be mindful of for long-term dental and bone health. The caramel coloring is purely for aesthetics. It's best enjoyed as an occasional treat rather than a primary source of hydration.";
       } else if (predefinedData?.includes("Monosodium glutamate")) {
         explanation = "These noodles are a quick source of energy from processed wheat, but they rely heavily on sodium and flavor enhancers like MSG for their savory profile. While satisfying in the moment, they lack the fiber and fresh nutrients found in whole meals. They're a convenient pantry staple, but adding some fresh greens or an egg can help balance out the nutritional profile.";
+      } else if (predefinedData?.includes("Potatoes")) {
+        explanation = "These snacks are thinly sliced potatoes cooked in vegetable oil. While potatoes themselves are a whole vegetable, the high-heat frying process and added salt turn them into a high-energy, low-nutrient snack. The natural flavors help with the savory appeal, making them easy to overconsume. They're a classic comfort food, but better kept for special occasions.";
+      } else if (predefinedData?.includes("cocoa butter")) {
+        explanation = "This treat is a complex mix of chocolate, peanuts, and sugars. The cocoa butter and milk solids provide a rich texture, but the combination of corn syrup and palm oil makes it very energy-dense. It's a delightful indulgence, though the high sugar content means it's best enjoyed mindfully as a dessert rather than a snack.";
+      } else if (predefinedData?.includes("Vitamin D3")) {
+        explanation = "This is a straightforward dairy product, primarily pasteurized milk fortified with Vitamin D. It's an excellent source of calcium and protein with very little processing. Unlike many packaged foods, it contains no added sugars or artificial stabilizers. It's a solid, nutrient-dense choice for daily consumption.";
+      } else if (predefinedData?.includes("taurine")) {
+        explanation = "This energy drink is formulated for a quick mental and physical boost using caffeine and taurine. While effective for short-term alertness, the high concentration of sucrose and glucose can lead to a significant energy crash later. The added B-vitamins are a nice touch, but they don't outweigh the impact of the refined sugars. Use it strategically when needed, but stay hydrated with water too.";
+      } else if (predefinedData?.includes("calcium propionate")) {
+        explanation = "This packaged bread uses enriched wheat flour and soybean oil for a soft, consistent texture. The addition of calcium propionate and monoglycerides helps it stay fresh on the shelf for longer than bakery-fresh bread. It's a convenient staple, but it's more processed than a simple sourdough or whole-grain loaf from a local bakery.";
       }
       
       setResult({ explanation });
