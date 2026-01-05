@@ -37,6 +37,7 @@ export default function Home() {
   const [status, setStatus] = useState<AnalysisState>("idle");
   const [result, setResult] = useState<any>(null);
   const [followUp, setFollowUp] = useState("");
+  const [textInput, setTextInput] = useState("");
   const [chat, setChat] = useState<{ role: 'user' | 'ai', content: string }[]>([]);
   const [isAsking, setIsAsking] = useState(false);
 
@@ -44,24 +45,30 @@ export default function Home() {
     setStatus("analyzing");
     setChat([]);
     
-    // Varied responses based on product type
+    // Varied responses based on product type or generic text input
     setTimeout(() => {
-      let explanation = "This product is mostly hearty oats with a sweet syrup added for flavor. While the oats provide a good source of fiber which helps with energy balance, the added syrup moves it away from being a whole food. It's a fine choice for an occasional snack, but for an everyday health boost, you might prefer something with fewer processed touches.";
-      
-      if (predefinedData?.includes("Phosphoric acid")) {
+      let dataToAnalyze = predefinedData || "";
+      let explanation = "This product seems to have a mix of ingredients that lean towards the processed side. While some components offer basic energy, the overall profile suggests it's best viewed as an occasional part of your diet rather than a nutrient-dense staple. It contains a few additives that don't contribute to its nutritional value but help with texture and shelf-life.";
+
+      if (dataToAnalyze.toLowerCase().includes("oats") || dataToAnalyze.toLowerCase().includes("cereal")) {
+        explanation = "This product is mostly hearty oats with a sweet syrup added for flavor. While the oats provide a good source of fiber which helps with energy balance, the added syrup moves it away from being a whole food. It's a fine choice for an occasional snack, but for an everyday health boost, you might prefer something with fewer processed touches.";
+      } else if (dataToAnalyze.toLowerCase().includes("phosphoric acid") || dataToAnalyze.toLowerCase().includes("cola") || dataToAnalyze.toLowerCase().includes("syrup")) {
         explanation = "This drink is essentially a blend of carbonated water and concentrated sweeteners. The phosphoric acid gives it that characteristic bite, but it's something to be mindful of for long-term dental and bone health. The caramel coloring is purely for aesthetics. It's best enjoyed as an occasional treat rather than a primary source of hydration.";
-      } else if (predefinedData?.includes("Monosodium glutamate")) {
+      } else if (dataToAnalyze.toLowerCase().includes("monosodium glutamate") || dataToAnalyze.toLowerCase().includes("noodles")) {
         explanation = "These noodles are a quick source of energy from processed wheat, but they rely heavily on sodium and flavor enhancers like MSG for their savory profile. While satisfying in the moment, they lack the fiber and fresh nutrients found in whole meals. They're a convenient pantry staple, but adding some fresh greens or an egg can help balance out the nutritional profile.";
-      } else if (predefinedData?.includes("Potatoes")) {
+      } else if (dataToAnalyze.toLowerCase().includes("potatoes") || dataToAnalyze.toLowerCase().includes("chips")) {
         explanation = "These snacks are thinly sliced potatoes cooked in vegetable oil. While potatoes themselves are a whole vegetable, the high-heat frying process and added salt turn them into a high-energy, low-nutrient snack. The natural flavors help with the savory appeal, making them easy to overconsume. They're a classic comfort food, but better kept for special occasions.";
-      } else if (predefinedData?.includes("cocoa butter")) {
+      } else if (dataToAnalyze.toLowerCase().includes("cocoa") || dataToAnalyze.toLowerCase().includes("chocolate")) {
         explanation = "This treat is a complex mix of chocolate, peanuts, and sugars. The cocoa butter and milk solids provide a rich texture, but the combination of corn syrup and palm oil makes it very energy-dense. It's a delightful indulgence, though the high sugar content means it's best enjoyed mindfully as a dessert rather than a snack.";
-      } else if (predefinedData?.includes("Vitamin D3")) {
+      } else if (dataToAnalyze.toLowerCase().includes("milk") || dataToAnalyze.toLowerCase().includes("dairy")) {
         explanation = "This is a straightforward dairy product, primarily pasteurized milk fortified with Vitamin D. It's an excellent source of calcium and protein with very little processing. Unlike many packaged foods, it contains no added sugars or artificial stabilizers. It's a solid, nutrient-dense choice for daily consumption.";
-      } else if (predefinedData?.includes("taurine")) {
+      } else if (dataToAnalyze.toLowerCase().includes("taurine") || dataToAnalyze.toLowerCase().includes("energy drink")) {
         explanation = "This energy drink is formulated for a quick mental and physical boost using caffeine and taurine. While effective for short-term alertness, the high concentration of sucrose and glucose can lead to a significant energy crash later. The added B-vitamins are a nice touch, but they don't outweigh the impact of the refined sugars. Use it strategically when needed, but stay hydrated with water too.";
-      } else if (predefinedData?.includes("calcium propionate")) {
+      } else if (dataToAnalyze.toLowerCase().includes("yeast") || dataToAnalyze.toLowerCase().includes("bread") || dataToAnalyze.toLowerCase().includes("flour")) {
         explanation = "This packaged bread uses enriched wheat flour and soybean oil for a soft, consistent texture. The addition of calcium propionate and monoglycerides helps it stay fresh on the shelf for longer than bakery-fresh bread. It's a convenient staple, but it's more processed than a simple sourdough or whole-grain loaf from a local bakery.";
+      } else if (dataToAnalyze.length > 50) {
+        // Generic fallback for long text that doesn't match specific keywords
+        explanation = "The ingredient list you've provided shows a complex profile. It contains several shelf-stable additives and refined components that are common in modern packaged foods. While functional, these ingredients don't offer the same level of nourishment as whole, unprocessed alternatives. It works well as a convenience option, but balancing it with fresher ingredients is always a good strategy.";
       }
       
       setResult({ explanation });
@@ -159,6 +166,8 @@ export default function Home() {
                         <div className="p-6 md:p-8 min-h-[300px] flex flex-col">
                           <TabsContent value="text" className="mt-0 flex-1 flex flex-col">
                             <Textarea 
+                              value={textInput}
+                              onChange={(e) => setTextInput(e.target.value)}
                               placeholder="Paste ingredient list here..."
                               className="flex-1 resize-none bg-secondary/20 border-border/60 focus:ring-primary/20 min-h-[180px] text-base rounded-xl p-4"
                             />
@@ -179,7 +188,7 @@ export default function Home() {
 
                           <div className="mt-6">
                             <Button 
-                              onClick={() => handleAnalyze()} 
+                              onClick={() => handleAnalyze(textInput)} 
                               disabled={status === "analyzing"}
                               className="w-full h-12 text-lg font-semibold rounded-xl shadow-lg shadow-primary/25"
                             >
