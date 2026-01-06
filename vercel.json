@@ -1,7 +1,8 @@
 {
   "framework": "vite",
+  "rootDirectory": "client",
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
+  "outputDirectory": "dist/public",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
