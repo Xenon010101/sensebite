@@ -9,6 +9,7 @@
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
+    
   },
   "iconLibrary": "lucide",
   "aliases": {
@@ -18,4 +19,5 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   }
+  
 }
