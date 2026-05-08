@@ -8,6 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { toast } from "sonner";
 import heroBg from "@assets/generated_images/warm_sunset_orange_abstract_background.png";
 
 import cerealImg from "@assets/stock_images/bowl_of_cereal_milk_65339b07.jpg";
@@ -20,14 +23,14 @@ import energyImg from "@assets/stock_images/energy_drink_can_blu_90687bff.jpg";
 import breadImg from "@assets/stock_images/loaf_of_sliced_white_9b230237.jpg";
 
 const CATEGORIES = [
-  { id: "cereal", label: "Breakfast Cereals", image: cerealImg, data: "Whole grain oats, sugar, oat bran, corn starch, honey, brown sugar syrup, salt, tripotassium phosphate, rice bran oil, natural almond flavor." },
-  { id: "snacks", label: "Packaged Snacks", image: snacksImg, data: "Potatoes, vegetable oil (sunflower, corn, and/or canola oil), salt, maltodextrin, sugar, dextrose, yeast extract, onion powder, natural flavors." },
-  { id: "drinks", label: "Soft Drinks", image: drinksImg, data: "Carbonated water, high fructose corn syrup, caramel color, phosphoric acid, natural flavors, caffeine." },
-  { id: "instant", label: "Instant Foods", image: instantImg, data: "Enriched wheat flour, vegetable oil, salt, dehydrated vegetables, monosodium glutamate, soy sauce powder, spices, artificial flavors." },
-  { id: "chocolates", label: "Chocolates & Sweets", image: chocolateImg, data: "Milk chocolate (sugar, cocoa butter, chocolate, skim milk, lactose, milkfat, soy lecithin), peanuts, corn syrup, sugar, palm oil, skim milk." },
-  { id: "dairy", label: "Dairy Products", image: dairyImg, data: "Grade A pasteurized milk, Vitamin D3." },
-  { id: "energy", label: "Energy Drinks", image: energyImg, data: "Carbonated water, sucrose, glucose, citric acid, taurine, sodium citrate, magnesium carbonate, caffeine, niacinamide, calcium pantothenate." },
-  { id: "bakery", label: "Packaged Bread", image: breadImg, data: "Unbleached enriched wheat flour, water, yeast, sugar, soybean oil, salt, wheat gluten, calcium propionate, datem, monoglycerides." },
+  { id: "cereal", label: "Breakfast Cereals", image: cerealImg, data: "Whole grain oats, sugar, oat bran, corn starch, honey, brown sugar syrup, salt, tripotassium phosphate, rice bran oil, natural flavors, BHT for freshness" },
+  { id: "snacks", label: "Packaged Snacks", image: snacksImg, data: "Potatoes, vegetable oil (sunflower, corn, and/or canola oil), salt, maltodextrin, sugar, dextrose, yeast extract, onion powder, garlic powder, paprika, citric acid" },
+  { id: "drinks", label: "Soft Drinks", image: drinksImg, data: "Carbonated water, high fructose corn syrup, caramel color, phosphoric acid, natural flavors, caffeine" },
+  { id: "instant", label: "Instant Foods", image: instantImg, data: "Enriched wheat flour, vegetable oil, salt, dehydrated vegetables, monosodium glutamate, soy sauce powder, spices, artificial flavors" },
+  { id: "chocolates", label: "Chocolates & Sweets", image: chocolateImg, data: "Milk chocolate (sugar, cocoa butter, chocolate, skim milk, lactose, milkfat, soy lecithin), peanuts, corn syrup, sugar, palm oil" },
+  { id: "dairy", label: "Dairy Products", image: dairyImg, data: "Grade A pasteurized milk, Vitamin D3" },
+  { id: "energy", label: "Energy Drinks", image: energyImg, data: "Carbonated water, sucrose, glucose, citric acid, taurine, sodium citrate, magnesium carbonate, caffeine, niacinamide, calcium pantothenate" },
+  { id: "bakery", label: "Packaged Bread", image: breadImg, data: "Unbleached enriched wheat flour, water, yeast, sugar, soybean oil, salt, wheat gluten, calcium propionate, datem, monoglycerides" },
 ];
 
 type AnalysisState = "idle" | "analyzing" | "complete";
@@ -39,41 +42,51 @@ export default function Home() {
   const [followUp, setFollowUp] = useState("");
   const [textInput, setTextInput] = useState("");
   const [chat, setChat] = useState<{ role: 'user' | 'ai', content: string }[]>([]);
-  const [isAsking, setIsAsking] = useState(false);
+  const [currentIngredients, setCurrentIngredients] = useState("");
+
+  const analyzeMutation = useMutation({
+    mutationFn: async (data: { ingredients: string; imageBase64?: string }) => {
+      const response = await apiRequest("POST", "/api/analyze", data);
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setResult(data);
+      setStatus("complete");
+      setChat([]);
+      toast.success("Analysis complete!");
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Analysis failed");
+      setStatus("idle");
+    },
+  });
+
+  const chatMutation = useMutation({
+    mutationFn: async (question: string) => {
+      const response = await apiRequest("POST", "/api/chat", {
+        ingredients: currentIngredients,
+        originalExplanation: result.explanation,
+        question,
+      });
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setChat(prev => [...prev, { role: 'ai', content: data.response }]);
+    },
+    onError: (error: any) => {
+      toast.error(error.message || "Chat failed");
+    },
+  });
 
   const handleAnalyze = (predefinedData?: string) => {
+    const ingredients = predefinedData || textInput;
+    if (!ingredients.trim()) {
+      toast.error("Please enter or select ingredients");
+      return;
+    }
     setStatus("analyzing");
-    setChat([]);
-    
-    // Varied responses based on product type or generic text input
-    setTimeout(() => {
-      let dataToAnalyze = predefinedData || "";
-      let explanation = "This product seems to have a mix of ingredients that lean towards the processed side. While some components offer basic energy, the overall profile suggests it's best viewed as an occasional part of your diet rather than a nutrient-dense staple. It contains a few additives that don't contribute to its nutritional value but help with texture and shelf-life.";
-
-      if (dataToAnalyze.toLowerCase().includes("oats") || dataToAnalyze.toLowerCase().includes("cereal")) {
-        explanation = "This product is mostly hearty oats with a sweet syrup added for flavor. While the oats provide a good source of fiber which helps with energy balance, the added syrup moves it away from being a whole food. It's a fine choice for an occasional snack, but for an everyday health boost, you might prefer something with fewer processed touches.";
-      } else if (dataToAnalyze.toLowerCase().includes("phosphoric acid") || dataToAnalyze.toLowerCase().includes("cola") || dataToAnalyze.toLowerCase().includes("syrup")) {
-        explanation = "This drink is essentially a blend of carbonated water and concentrated sweeteners. The phosphoric acid gives it that characteristic bite, but it's something to be mindful of for long-term dental and bone health. The caramel coloring is purely for aesthetics. It's best enjoyed as an occasional treat rather than a primary source of hydration.";
-      } else if (dataToAnalyze.toLowerCase().includes("monosodium glutamate") || dataToAnalyze.toLowerCase().includes("noodles")) {
-        explanation = "These noodles are a quick source of energy from processed wheat, but they rely heavily on sodium and flavor enhancers like MSG for their savory profile. While satisfying in the moment, they lack the fiber and fresh nutrients found in whole meals. They're a convenient pantry staple, but adding some fresh greens or an egg can help balance out the nutritional profile.";
-      } else if (dataToAnalyze.toLowerCase().includes("potatoes") || dataToAnalyze.toLowerCase().includes("chips")) {
-        explanation = "These snacks are thinly sliced potatoes cooked in vegetable oil. While potatoes themselves are a whole vegetable, the high-heat frying process and added salt turn them into a high-energy, low-nutrient snack. The natural flavors help with the savory appeal, making them easy to overconsume. They're a classic comfort food, but better kept for special occasions.";
-      } else if (dataToAnalyze.toLowerCase().includes("cocoa") || dataToAnalyze.toLowerCase().includes("chocolate")) {
-        explanation = "This treat is a complex mix of chocolate, peanuts, and sugars. The cocoa butter and milk solids provide a rich texture, but the combination of corn syrup and palm oil makes it very energy-dense. It's a delightful indulgence, though the high sugar content means it's best enjoyed mindfully as a dessert rather than a snack.";
-      } else if (dataToAnalyze.toLowerCase().includes("milk") || dataToAnalyze.toLowerCase().includes("dairy")) {
-        explanation = "This is a straightforward dairy product, primarily pasteurized milk fortified with Vitamin D. It's an excellent source of calcium and protein with very little processing. Unlike many packaged foods, it contains no added sugars or artificial stabilizers. It's a solid, nutrient-dense choice for daily consumption.";
-      } else if (dataToAnalyze.toLowerCase().includes("taurine") || dataToAnalyze.toLowerCase().includes("energy drink")) {
-        explanation = "This energy drink is formulated for a quick mental and physical boost using caffeine and taurine. While effective for short-term alertness, the high concentration of sucrose and glucose can lead to a significant energy crash later. The added B-vitamins are a nice touch, but they don't outweigh the impact of the refined sugars. Use it strategically when needed, but stay hydrated with water too.";
-      } else if (dataToAnalyze.toLowerCase().includes("yeast") || dataToAnalyze.toLowerCase().includes("bread") || dataToAnalyze.toLowerCase().includes("flour")) {
-        explanation = "This packaged bread uses enriched wheat flour and soybean oil for a soft, consistent texture. The addition of calcium propionate and monoglycerides helps it stay fresh on the shelf for longer than bakery-fresh bread. It's a convenient staple, but it's more processed than a simple sourdough or whole-grain loaf from a local bakery.";
-      } else if (dataToAnalyze.length > 50) {
-        // Generic fallback for long text that doesn't match specific keywords
-        explanation = "The ingredient list you've provided shows a complex profile. It contains several shelf-stable additives and refined components that are common in modern packaged foods. While functional, these ingredients don't offer the same level of nourishment as whole, unprocessed alternatives. It works well as a convenience option, but balancing it with fresher ingredients is always a good strategy.";
-      }
-      
-      setResult({ explanation });
-      setStatus("complete");
-    }, 2000);
+    setCurrentIngredients(ingredients);
+    analyzeMutation.mutate({ ingredients });
   };
 
   const handleFollowUp = (e: React.FormEvent) => {
@@ -83,22 +96,24 @@ export default function Home() {
     const userMsg = followUp;
     setChat(prev => [...prev, { role: 'user', content: userMsg }]);
     setFollowUp("");
-    setIsAsking(true);
-
-    setTimeout(() => {
-      let response = "From a health perspective, the oats are great for steady energy, but the syrup can cause quicker sugar spikes. It's best enjoyed as a treat rather than a primary health food.";
-      if (userMsg.toLowerCase().includes("alternative")) {
-        response = "For a healthier alternative, plain oats with fresh berries and a drizzle of honey give you more vitamins and antioxidants without the artificial additives.";
-      }
-      setChat(prev => [...prev, { role: 'ai', content: response }]);
-      setIsAsking(false);
-    }, 1500);
+    chatMutation.mutate(userMsg);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      handleAnalyze();
+    if (!file) return;
+
+    try {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64 = (event.target?.result as string).split(',')[1];
+        setStatus("analyzing");
+        toast.loading("Extracting text from image...");
+        analyzeMutation.mutate({ ingredients: "", imageBase64: base64 });
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      toast.error("Failed to read file");
     }
   };
 
@@ -149,14 +164,14 @@ export default function Home() {
                         <TabsList className="w-full h-auto p-0 flex border-b border-border/50 bg-secondary/30 rounded-none">
                           <TabsTrigger 
                             value="text" 
-                            className="flex-1 py-4 h-auto rounded-none border-b-2 border-transparent data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-primary transition-all font-medium"
+                            className="flex-1 py-4 h-auto rounded-none border-b-2 border-transparent data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-primary"
                           >
                             <Type className="w-4 h-4 mr-2" />
                             Paste Text
                           </TabsTrigger>
                           <TabsTrigger 
                             value="image" 
-                            className="flex-1 py-4 h-auto rounded-none border-b-2 border-transparent data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-primary transition-all font-medium"
+                            className="flex-1 py-4 h-auto rounded-none border-b-2 border-transparent data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:border-primary"
                           >
                             <Upload className="w-4 h-4 mr-2" />
                             Upload Image
@@ -174,7 +189,7 @@ export default function Home() {
                           </TabsContent>
 
                           <TabsContent value="image" className="mt-0 flex-1 flex flex-col justify-center">
-                            <label className="border-2 border-dashed border-border hover:border-primary/50 transition-colors rounded-xl p-10 flex flex-col items-center justify-center text-center cursor-pointer bg-secondary/10 hover:bg-secondary/20 h-full min-h-[180px]">
+                            <label className="border-2 border-dashed border-border hover:border-primary/50 transition-colors rounded-xl p-10 flex flex-col items-center justify-center text-center cursor-pointer">
                               <input 
                                 type="file" 
                                 accept="image/*" 
@@ -183,16 +198,17 @@ export default function Home() {
                               />
                               <Upload className="w-8 h-8 text-primary mb-4" />
                               <p className="font-medium">Click to upload food label</p>
+                              <p className="text-sm text-muted-foreground mt-1">PNG, JPG up to 10MB</p>
                             </label>
                           </TabsContent>
 
                           <div className="mt-6">
                             <Button 
-                              onClick={() => handleAnalyze(textInput)} 
-                              disabled={status === "analyzing"}
+                              onClick={() => handleAnalyze()} 
+                              disabled={analyzeMutation.isPending || status === "analyzing"}
                               className="w-full h-12 text-lg font-semibold rounded-xl shadow-lg shadow-primary/25"
                             >
-                              {status === "analyzing" ? (
+                              {analyzeMutation.isPending ? (
                                 <Loader2 className="w-5 h-5 animate-spin" />
                               ) : (
                                 "Start Reasoning"
@@ -216,7 +232,8 @@ export default function Home() {
                           whileHover={{ y: -4 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => handleAnalyze(cat.data)}
-                          className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-secondary/10 border border-border/50 transition-all hover:shadow-xl hover:shadow-primary/5"
+                          disabled={analyzeMutation.isPending}
+                          className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-secondary/10 border border-border/50 transition-all hover:shadow-xl hover:shadow-primary/5 disabled:opacity-50"
                         >
                           <img 
                             src={cat.image} 
@@ -276,7 +293,7 @@ export default function Home() {
                             </div>
                           </div>
                         ))}
-                        {isAsking && (
+                        {chatMutation.isPending && (
                           <div className="flex justify-start">
                             <div className="bg-secondary/40 p-4 rounded-2xl border border-border">
                               <Loader2 className="w-4 h-4 animate-spin text-primary" />
@@ -297,7 +314,7 @@ export default function Home() {
                           type="submit" 
                           size="icon" 
                           className="absolute right-2 top-2 h-10 w-10 rounded-xl"
-                          disabled={!followUp.trim() || isAsking}
+                          disabled={!followUp.trim() || chatMutation.isPending}
                         >
                           <MessageCircle className="w-5 h-5" />
                         </Button>
